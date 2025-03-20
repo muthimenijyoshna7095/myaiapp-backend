@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./App.css"; // ✅ Import CSS
 
-const API_URL = "https://myaiapp-backend.onrender.com/";
+const API_URL = "https://myaiapp-backend.onrender.com/api";
 
 function App() {
     const [messages, setMessages] = useState([]);
@@ -14,10 +14,12 @@ function App() {
       try {
           const userMessage = { sender: "User", receiver: "Bot", text: input };
   
-          // ✅ Send to backend first
-          const res = await axios.post(API_URL, userMessage);
+          console.log("Sending message:", userMessage); // ✅ Debug log
   
-          // ✅ Only update state with API response (not duplicating user message)
+          const res = await axios.post(`${API_URL}/send`, userMessage);
+
+          console.log("Response from backend:", res.data); // ✅ Debug log
+  
           setMessages((prev) => [...prev, ...res.data]);
   
           setInput(""); // Clear input field
@@ -26,7 +28,6 @@ function App() {
       }
   };
   
-
     return (
         <div className="chat-container">
             <h2>AI Messaging App</h2>

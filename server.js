@@ -1,27 +1,25 @@
-const express = require("express");
-const connectDB = require("./db");
-const routes = require("./routes"); // Import routes
 const cors = require("cors");
-require("dotenv").config();
+const express = require("express");
 
-// Initialize Express
 const app = express();
 
-// Middleware
+// ✅ Update CORS settings
+app.use(cors({
+    origin: "*", // Allow all origins (or use specific one like "http://localhost:3000")
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"]
+}));
+
 app.use(express.json());
-app.use(cors());
 
-// Connect to Database
-connectDB();
-
-// Root Route to Fix "Cannot GET /" Error
+// ✅ Test route to check if CORS works
 app.get("/", (req, res) => {
     res.send("Backend is running! 🚀");
 });
 
-// Use Routes (Consistent Path)
+// ✅ Ensure correct routes are used
+const routes = require("./routes");
 app.use("/api", routes);
 
-// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
