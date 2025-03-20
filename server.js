@@ -3,21 +3,21 @@ const express = require("express");
 
 const app = express();
 
-// ✅ Updated CORS settings
+// ✅ CORS settings
 app.use(cors({
-    origin: "*", // Allow all origins (or use specific one like "http://localhost:3000")
+    origin: "*", // Allow all origins (Change to "http://localhost:3000" for security)
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"]
 }));
 
 app.use(express.json());
 
-// ✅ Test route to check if backend is running
+// ✅ Root route to check if backend is running
 app.get("/", (req, res) => {
     res.send("Backend is running! 🚀");
 });
 
-// ✅ Ensure correct routes are used
+// ✅ Import and use routes
 const routes = require("./routes");
 app.use("/api", routes);
 
