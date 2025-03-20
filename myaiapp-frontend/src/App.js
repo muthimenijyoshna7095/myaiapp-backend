@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./App.css"; // ✅ Import CSS
 
-const API_URL = "http://localhost:5000/api/messages";
+const API_URL = "https://myaiapp-backend.onrender.com/";
 
 function App() {
     const [messages, setMessages] = useState([]);
