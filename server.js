@@ -1,25 +1,29 @@
 const express = require("express");
 const connectDB = require("./db");
-const routes = require("./routes"); // Import routes
+const routes = require("./routes");
 const cors = require("cors");
 require("dotenv").config();
 
-// Initialize Express
 const app = express();
 
-// ✅ Middleware
-app.use(express.json());
-app.use(cors());
+// ✅ Fix CORS
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"]
+}));
 
-// ✅ Connect to Database
+app.use(express.json());
+
+// ✅ Connect to MongoDB
 connectDB();
 
-// ✅ Test Root Route
+// ✅ Default route to check if backend is live
 app.get("/", (req, res) => {
     res.send("Backend is running! 🚀");
 });
 
-// ✅ Use Routes (Ensure Correct Path)
+// ✅ Correct API route path
 app.use("/api", routes);
 
 // ✅ Start Server
