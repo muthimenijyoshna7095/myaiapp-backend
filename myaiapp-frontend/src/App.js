@@ -2,32 +2,30 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./App.css"; // ✅ Import CSS
 
-const API_URL = "https://myaiapp-backend.onrender.com/api";
+const API_URL = "https://myaiapp-backend.onrender.com/api/send";
 
 function App() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
 
     const sendMessage = async () => {
-      if (!input.trim()) return; // Prevent empty messages
-  
-      try {
-          const userMessage = { sender: "User", receiver: "Bot", text: input };
-  
-          console.log("Sending message:", userMessage); // ✅ Debug log
-  
-          const res = await axios.post(`${API_URL}/send`, userMessage);
+        if (!input.trim()) return; // Prevent empty messages
 
-          console.log("Response from backend:", res.data); // ✅ Debug log
-  
-          setMessages((prev) => [...prev, ...res.data]);
-  
-          setInput(""); // Clear input field
-      } catch (error) {
-          console.error("Error sending message:", error);
-      }
-  };
-  
+        try {
+            const userMessage = { sender: "User", text: input };
+
+            // ✅ Send user message to backend
+            const res = await axios.post(API_URL, userMessage);
+
+            // ✅ Append user's message & bot's response
+            setMessages((prev) => [...prev, userMessage, ...res.data]);
+
+            setInput(""); // Clear input field
+        } catch (error) {
+            console.error("Error sending message:", error);
+        }
+    };
+
     return (
         <div className="chat-container">
             <h2>AI Messaging App</h2>

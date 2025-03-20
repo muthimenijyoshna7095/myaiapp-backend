@@ -3,7 +3,7 @@ const express = require("express");
 
 const app = express();
 
-// ✅ Update CORS settings
+// ✅ Updated CORS settings
 app.use(cors({
     origin: "*", // Allow all origins (or use specific one like "http://localhost:3000")
     methods: ["GET", "POST"],
@@ -12,7 +12,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// ✅ Test route to check if CORS works
+// ✅ Test route to check if backend is running
 app.get("/", (req, res) => {
     res.send("Backend is running! 🚀");
 });
