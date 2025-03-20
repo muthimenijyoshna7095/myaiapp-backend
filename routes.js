@@ -1,5 +1,5 @@
 const express = require("express");
-const Message = require("./messageModel");
+const Message = require("./messageModel"); // ✅ Import the model
 
 const router = express.Router();
 
