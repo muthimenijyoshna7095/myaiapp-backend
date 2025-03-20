@@ -1,25 +1,27 @@
-const cors = require("cors");
 const express = require("express");
+const connectDB = require("./db");
+const routes = require("./routes"); // Import routes
+const cors = require("cors");
+require("dotenv").config();
 
+// Initialize Express
 const app = express();
 
-// ✅ CORS settings
-app.use(cors({
-    origin: "*", // Allow all origins (Change to "http://localhost:3000" for security)
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"]
-}));
-
+// ✅ Middleware
 app.use(express.json());
+app.use(cors());
 
-// ✅ Root route to check if backend is running
+// ✅ Connect to Database
+connectDB();
+
+// ✅ Test Root Route
 app.get("/", (req, res) => {
     res.send("Backend is running! 🚀");
 });
 
-// ✅ Import and use routes
-const routes = require("./routes");
+// ✅ Use Routes (Ensure Correct Path)
 app.use("/api", routes);
 
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

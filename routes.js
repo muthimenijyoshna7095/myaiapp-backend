@@ -1,26 +1,34 @@
 const express = require("express");
+const Message = require("./messageModel"); // Ensure model is correct
 const router = express.Router();
 
-// ✅ Predefined bot responses
-const botResponses = {
-    "hi": "How are you?",
-    "hello": "Hello! How can I assist you?",
-    "how are you": "I'm just a bot, but I'm doing great!",
-    "joke": "Why don't skeletons fight each other? Because they don't have the guts!",
-    "bye": "Goodbye! Have a nice day!",
-};
+// ✅ Fetch all messages
+router.get("/messages", async (req, res) => {
+    try {
+        const messages = await Message.find().sort({ timestamp: 1 });
+        res.json(messages);
+    } catch (error) {
+        console.error("Error fetching messages:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
 
-// ✅ Handle user messages
-router.post("/send", (req, res) => {
-    const userMessage = req.body.text.toLowerCase(); // Convert to lowercase for consistency
+// ✅ Post a message & get bot response
+router.post("/messages", async (req, res) => {
+    try {
+        const { sender, receiver, text } = req.body;
+        if (!sender || !receiver || !text) {
+            return res.status(400).json({ error: "Missing required fields" });
+        }
 
-    // Check for predefined responses, otherwise echo back
-    const botReply = botResponses[userMessage] || `You said: ${userMessage}`;
+        const userMessage = new Message({ sender, receiver, text });
+        await userMessage.save();
 
-    res.json([
-        { sender: "User", text: userMessage },
-        { sender: "Bot", text: botReply }
-    ]);
+        res.json([userMessage]);
+    } catch (error) {
+        console.error("Error saving messages:", error);
+        res.status(500).json({ error: "Server error" });
+    }
 });
 
 module.exports = router;
