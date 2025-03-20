@@ -14,6 +14,11 @@ app.use(cors());
 // Connect to Database
 connectDB();
 
+// Root Route to Fix "Cannot GET /" Error
+app.get("/", (req, res) => {
+    res.send("Backend is running! 🚀");
+});
+
 // Use Routes (Consistent Path)
 app.use("/api", routes);
 
