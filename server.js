@@ -4,26 +4,23 @@ const routes = require("./routes");
 const cors = require("cors");
 require("dotenv").config();
 
+// ✅ Initialize Express
 const app = express();
 
-// ✅ Fix CORS
+// ✅ Middleware for JSON & CORS
+app.use(express.json());
 app.use(cors({
-    origin: "*",
+    origin: "*", // Allow all origins (or specify your frontend URL)
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"]
 }));
 
-app.use(express.json());
-
-// ✅ Connect to MongoDB
-connectDB();
-
-// ✅ Default route to check if backend is live
+// ✅ Root Route (Fix "Cannot GET /" Issue)
 app.get("/", (req, res) => {
     res.send("Backend is running! 🚀");
 });
 
-// ✅ Correct API route path
+// ✅ Use Routes
 app.use("/api", routes);
 
 // ✅ Start Server
